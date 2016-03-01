@@ -1,13 +1,8 @@
-<md-toolbar>
-    <h3 class="md-toolbar-tools">Users</h3>
-</md-toolbar>
-
-
 <adminr-resource assign="users" init="User.query()"></adminr-resource>
-{{users.data.length}}
-{{users.range}}
-<div layout="row" ng-init="selected = []">
-    <md-card flex>
+<!--{{users.data.length}}-->
+<!--{{users.range}}-->
+<!--<div layout="row" ng-init="selected = []">-->
+    <md-card flex ng-init="selected = []">
         <md-toolbar class="md-table-toolbar md-default">
             <div class="md-toolbar-tools">
                 <span>Users data table {{selected}}</span>
@@ -33,5 +28,5 @@
 
         <md-table-pagination ng-if="users.resolved" md-limit="users.range.limit" md-page="users.range.page" md-total="{{users.range.count}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
     </md-card>
-</div>
+<!--</div>-->
 
