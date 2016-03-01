@@ -1,0 +1,23 @@
+{
+  "name": "adminr-md-admin",
+  "version": "0.0.1",
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "browserify": "^11.0.1",
+    "browserify-ngannotate": "^1.0.1",
+    "coffeeify": "^1.1.0",
+    "node-sass": "^3.4.2",
+    "nodemon": "^1.8.1",
+    "parallelshell": "^2.0.0",
+    "partialify": "^3.1.5"
+  },
+  "scripts": {
+    "build-styles": "[ ! -d styles ] || cat ./styles/* | ./node_modules/.bin/node-sass > ./dist/styles.css",
+    "build-coffeescripts": "browserify -t coffeeify -t [ browserify-ngannotate --x .coffee ] -t partialify index.coffee -o dist/index.js",
+    "prebuild": "[ -d dist ] || mkdir dist",
+    "build": "npm run build-styles;npm run build-coffeescripts",
+    "serve-example": "./node_modules/.bin/browser-sync start --server --startPath example --files \"dist/*,example/*\" --reload-delay 500",
+    "watch": "./node_modules/.bin/nodemon -x 'npm run build' -e html,coffee,scss --ignore dist --ignore example",
+    "example": "./node_modules/.bin/parallelshell 'npm run watch' 'npm run serve-example'"
+  }
+}

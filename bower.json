@@ -1,0 +1,35 @@
+{
+  "name": "adminr-md-admin",
+  "authors": [
+    "jakubknejzlik <jakub.knejzlik@gmail.com>"
+  ],
+  "description": "adminr Material Design admin module",
+  "main": [
+    "dist/index.js",
+    "dist/styles.css"
+  ],
+  "moduleType": [],
+  "keywords": [
+    "adminr",
+    "material design",
+    "angular",
+    "layout"
+  ],
+  "license": "MIT",
+  "homepage": "www.knejzlik.cz",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "example"
+  ],
+  "dependencies": {
+    "adminr-md-layout": "^0.0.2",
+    "angular-material": "^1.0.5",
+    "adminr-core": "^0.0.8",
+    "adminr-md-login": "^0.1.2",
+    "angular-material-data-table": "^0.9.11"
+  }
+}
