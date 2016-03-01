@@ -1,34 +1,3 @@
-dashboard
-
-
-<adminr-resource assign="users" init="User.query()"></adminr-resource>
-{{users.data.length}}
-{{users.range}}
-<div layout="row" ng-init="selected = []">
-    <md-card flex>
-        <md-toolbar class="md-table-toolbar md-default">
-            <div class="md-toolbar-tools">
-                <span>Users data table {{selected}}</span>
-            </div>
-        </md-toolbar>
-
-        <md-table-container>
-            <table md-table md-row-select ng-model="selected" md-progressa="users.data">
-                <thead md-head md-order="users.params.order" md-on-reorder="onReorder">
-                <tr md-row>
-                    <th md-column md-numeric md-order-by="_id"><span>#</span></th>
-                    <th md-column md-order-by="username"><span>Username</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                    <tr md-row md-select="user" md-select-id="{{user.id}}" md-auto-select ng-repeat="user in users.data">
-                        <td md-cell class="schrink">{{user.id}}</td>
-                        <td md-cell>{{user.username}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-
-        <md-table-pagination ng-if="users.resolved" md-limit="users.range.limit" md-page="users.range.page" md-total="{{users.range.count}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
-    </md-card>
-</div>
+<md-card>
+    <h1 class="md-headline">Welcome to MdAdmin dashboard</h1>
+</md-card>
