@@ -9,27 +9,20 @@ mod.config(['AdminrContainerManagerProvider',(AdminrContainerManagerProvider)->
 
 mod.run(['$templateCache',($templateCache)->
   $templateCache.put('adminr-md-admin-top-menu',require('./views/top-menu.html'))
-#  $templateCache.put('adminr-md-layout-side-menu',require('./views/side-menu.html'))
 ])
 
 
-#mod.provider('AdminrMdLayout',['AdminrContainerManagerProvider','AdminrBasicLayoutProvider',(AdminrContainerManagerProvider,AdminrBasicLayoutProvider)->
-#
-#  class AdminrMdLayoutStructure
-#
-#    sidemenu: AdminrBasicLayoutProvider
-#
-#    brandTitle: null
-#
-#    setAsRootContainer:()->
-#      AdminrContainerManagerProvider.setViewForRootContainer('adminr-md-layout')
-##    setAsRootContainerWithLogin:()->
-##      AdminrMdLoginProvider.setAsRootContainerView()
-##      AdminrMdLoginProvider.setLoggedView('adminr-md-layout')
-#    setBrandTitle:(title)->
-#      @brandTitle = title
-#    $get:()->
-#      return @
-#
-#  return new AdminrMdLayoutStructure()
-#])
+mod.provider('AdminrMdAdmin',['AdminrMdLoginProvider','AdminrMdLayoutProvider',(AdminrMdLoginProvider,AdminrMdLayoutProvider)->
+
+  class AdminrMdLayoutStructure
+
+    layout: AdminrMdLayoutProvider
+
+    setAsRootContainer:()->
+      AdminrMdLoginProvider.setAsRootContainerView()
+      AdminrMdLoginProvider.setLoggedView('adminr-md-layout')
+    $get:()->
+      return @
+
+  return new AdminrMdLayoutStructure()
+])

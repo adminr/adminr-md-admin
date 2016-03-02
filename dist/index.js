@@ -15,6 +15,30 @@ mod.run([
   }
 ]);
 
+mod.provider('AdminrMdAdmin', [
+  'AdminrMdLoginProvider', 'AdminrMdLayoutProvider', function(AdminrMdLoginProvider, AdminrMdLayoutProvider) {
+    var AdminrMdLayoutStructure;
+    AdminrMdLayoutStructure = (function() {
+      function AdminrMdLayoutStructure() {}
+
+      AdminrMdLayoutStructure.prototype.layout = AdminrMdLayoutProvider;
+
+      AdminrMdLayoutStructure.prototype.setAsRootContainer = function() {
+        AdminrMdLoginProvider.setAsRootContainerView();
+        return AdminrMdLoginProvider.setLoggedView('adminr-md-layout');
+      };
+
+      AdminrMdLayoutStructure.prototype.$get = function() {
+        return this;
+      };
+
+      return AdminrMdLayoutStructure;
+
+    })();
+    return new AdminrMdLayoutStructure();
+  }
+]);
+
 
 },{"./views/top-menu.html":2}],2:[function(require,module,exports){
 module.exports = '<md-menu-item>\n    <md-button ng-click="dataSource.logout()">\n        <i class="mdi mdi-logout mdi-24px"></i>\n        Logout\n    </md-button>\n</md-menu-item>';
