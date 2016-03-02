@@ -1,6 +1,6 @@
 {
   "name": "adminr-md-admin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
     "browser-sync": "^2.11.1",
     "browserify": "^11.0.1",
