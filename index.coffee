@@ -26,3 +26,52 @@ mod.provider('AdminrMdAdmin',['AdminrMdLoginProvider','AdminrMdLayoutProvider',(
 
   return new AdminrMdLayoutStructure()
 ])
+
+
+mod.directive('mdAdminTableResource',()->
+  return {
+    compile:(elm,attrs)->
+      resourceName = attrs.mdAdminTableResource
+      elm.find('table').attr('md-progress',resourceName + '.$promise')
+      elm.find('table').find('thead').attr('md-order',resourceName + '.params.order')
+  }
+)
+
+mod.directive('mdAdminResource',()->
+  return {
+#    scope:{
+#      resource:'=mdAdminPaginationResource'
+#    },
+#    priority: 1
+    compile:(elm,attrs)->
+      resourceName = attrs.mdAdminResource
+      pagingRange = '_pagingResource'
+      pagination = elm.find('md-table-pagination')
+      pagination.attr('md-total','{{' + pagingRange + '.count}}')
+      pagination.attr('md-limit',pagingRange + '.limit')
+      pagination.attr('md-page',pagingRange + '.page')
+
+      tableContainer = elm.find('md-table-container')
+      if not tableContainer.attr('md-admin-table-resource')
+        tableContainer.attr('md-admin-table-resource',resourceName)
+
+      return (scope,elm)->
+        scope[pagingRange] = {page:0}
+        scope.$watch(resourceName + '.resolved',(resolved)->
+          if resolved
+            range = scope.$eval(resourceName + '.range')
+            scope[pagingRange].limit = range.limit
+            scope[pagingRange].page = range.page
+            scope[pagingRange].count = range.count
+#          else
+#            scope[pagingRange] = {}
+        )
+        scope.$watch(pagingRange,(newValue)->
+          if newValue
+            resource = scope.$eval(resourceName)
+            resource.range.limit = newValue.limit
+            resource.range.page = newValue.page
+        ,yes)
+
+  }
+)
