@@ -69,8 +69,9 @@ mod.directive('mdAdminResource',()->
         scope.$watch(pagingRange,(newValue)->
           if newValue
             resource = scope.$eval(resourceName)
-            resource.range.limit = newValue.limit
-            resource.range.page = newValue.page
+            if resource?.range
+              resource.range.limit = newValue.limit
+              resource.range.page = newValue.page
         ,yes)
 
   }

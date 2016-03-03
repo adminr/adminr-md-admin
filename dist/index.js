@@ -81,8 +81,10 @@ mod.directive('mdAdminResource', function() {
           var resource;
           if (newValue) {
             resource = scope.$eval(resourceName);
-            resource.range.limit = newValue.limit;
-            return resource.range.page = newValue.page;
+            if (resource != null ? resource.range : void 0) {
+              resource.range.limit = newValue.limit;
+              return resource.range.page = newValue.page;
+            }
           }
         }, true);
       };
