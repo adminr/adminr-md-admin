@@ -31,6 +31,6 @@
     "adminr-core": "^0.0.8",
     "adminr-md-login": "^0.1.2",
     "angular-material-data-table": "^0.9.11",
-    "adminr-datasources": "^0.1.18"
+    "adminr-datasources": "^0.1.19"
   }
 }
