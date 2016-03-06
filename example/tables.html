@@ -1,9 +1,6 @@
 <adminr-resource assign="users" init="User.query({limit:5})"></adminr-resource>
-<md-card flex md-admin-resource="users">
+<md-card flex md-admin-resource="users" md-table-title="'Success table'">
     <md-toolbar class="md-table-toolbar md-default">
-        <div class="md-toolbar-tools">
-            <span>Success table</span>
-        </div>
     </md-toolbar>
 
     <md-table-container>
@@ -33,6 +30,33 @@
         <div class="md-toolbar-tools">
             <span>Error table</span>
         </div>
+    </md-toolbar>
+
+    <md-table-container>
+        <table md-table>
+            <thead md-head>
+            <tr md-row>
+                <th md-column md-numeric md-order-by="_id"><span>#</span></th>
+                <th md-column md-order-by="username"><span>Username</span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row>
+                <td md-cell class="schrink">{{row.id}}</td>
+                <td md-cell>{{row.username}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
+    <md-table-pagination md-boundary-links md-page-select></md-table-pagination>
+</md-card>
+
+<md-card flex md-admin-resource="users" md-table-title="'Table with search'" md-table-search="users.params.q">
+    <md-toolbar class="md-table-toolbar md-default">
+        <!--<div class="md-toolbar-tools">-->
+            <!--<span>Table with search</span>-->
+        <!--</div>-->
     </md-toolbar>
 
     <md-table-container>

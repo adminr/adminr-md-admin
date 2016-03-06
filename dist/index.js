@@ -11,7 +11,8 @@ mod.config([
 
 mod.run([
   '$templateCache', function($templateCache) {
-    return $templateCache.put('adminr-md-admin-top-menu', require('./views/top-menu.html'));
+    $templateCache.put('adminr-md-admin-top-menu', require('./views/top-menu.html'));
+    return $templateCache.put('adminr-md-admin-table-toolbar', require('./views/table-toolbar.html'));
   }
 ]);
 
@@ -57,49 +58,84 @@ mod.directive('mdAdminTableResource', function() {
   };
 });
 
-mod.directive('mdAdminResource', function() {
-  return {
-    compile: function(elm, attrs) {
-      var pagination, pagingRange, resourceName, tableContainer;
-      resourceName = attrs.mdAdminResource;
-      pagingRange = '_pagingResource' + Math.floor(Math.random() * 99999);
-      pagination = elm.find('md-table-pagination');
-      pagination.attr('md-total', '{{' + pagingRange + '.count}}');
-      pagination.attr('md-limit', pagingRange + '.limit');
-      pagination.attr('md-page', pagingRange + '.page');
-      tableContainer = elm.find('md-table-container');
-      if (!tableContainer.attr('md-admin-table-resource')) {
-        tableContainer.attr('md-admin-table-resource', resourceName);
-      }
-      return function(scope, elm) {
-        scope[pagingRange] = {
-          page: 0
-        };
-        scope.$watch(resourceName + '.resolved', function(resolved) {
-          var range;
-          if (resolved) {
-            range = scope.$eval(resourceName + '.range');
-            scope[pagingRange].limit = range.limit;
-            scope[pagingRange].page = range.page;
-            return scope[pagingRange].count = range.count;
-          }
-        });
-        return scope.$watch(pagingRange, function(newValue) {
-          var resource;
-          if (newValue) {
-            resource = scope.$eval(resourceName);
-            if (resource != null ? resource.range : void 0) {
-              resource.range.limit = newValue.limit;
-              return resource.range.page = newValue.page;
+mod.directive('mdAdminResource', [
+  '$templateCache', '$timeout', function($templateCache, $timeout) {
+    return {
+      scope: true,
+      compile: function(elm, attrs) {
+        var mdTableSearchVariable, pagination, pagingRange, resourceName, searchInput, tableContainer, template, toolbar, toolbarContent;
+        resourceName = attrs.mdAdminResource;
+        pagingRange = '_pagingResource' + Math.floor(Math.random() * 99999);
+        pagination = elm.find('md-table-pagination');
+        pagination.attr('md-total', '{{' + pagingRange + '.count}}');
+        pagination.attr('md-limit', pagingRange + '.limit');
+        pagination.attr('md-page', pagingRange + '.page');
+        toolbar = elm.find('md-toolbar');
+        template = $templateCache.get('adminr-md-admin-table-toolbar');
+        toolbarContent = angular.element(template);
+        searchInput = toolbarContent.find('input');
+        mdTableSearchVariable = null;
+        if (attrs.mdTableSearch === 'true') {
+          mdTableSearchVariable = resourceName + '.params.q';
+        } else if (attrs.mdTableSearch) {
+          mdTableSearchVariable = attrs.mdTableSearch;
+        }
+        if (mdTableSearchVariable) {
+          searchInput.attr('ng-model', mdTableSearchVariable);
+        }
+        toolbar.append(toolbarContent);
+        tableContainer = elm.find('md-table-container');
+        if (!tableContainer.attr('md-admin-table-resource')) {
+          tableContainer.attr('md-admin-table-resource', resourceName);
+        }
+        return function(scope, elm, attrs) {
+          scope.tableTitle = scope.$eval(attrs.mdTableTitle);
+          scope.search = {
+            enabled: !!attrs.mdTableSearch,
+            active: false
+          };
+          scope.activateSearch = function() {
+            scope.search.active = true;
+            return $timeout(function() {
+              searchInput = elm.find('md-toolbar').find('input');
+              return searchInput.focus();
+            }, 0);
+          };
+          scope.deactivateSearch = function() {
+            scope.$eval(mdTableSearchVariable + ' = null');
+            return scope.search.active = false;
+          };
+          scope[pagingRange] = {
+            page: 0
+          };
+          scope.$watch(resourceName + '.resolved', function(resolved) {
+            var range;
+            if (resolved) {
+              range = scope.$eval(resourceName + '.range');
+              scope[pagingRange].limit = range.limit;
+              scope[pagingRange].page = range.page;
+              return scope[pagingRange].count = range.count;
             }
-          }
-        }, true);
-      };
-    }
-  };
-});
+          });
+          return scope.$watch(pagingRange, function(newValue) {
+            var resource;
+            if (newValue) {
+              resource = scope.$eval(resourceName);
+              if (resource != null ? resource.range : void 0) {
+                resource.range.limit = newValue.limit;
+                return resource.range.page = newValue.page;
+              }
+            }
+          }, true);
+        };
+      }
+    };
+  }
+]);
 
 
-},{"./views/top-menu.html":2}],2:[function(require,module,exports){
+},{"./views/table-toolbar.html":2,"./views/top-menu.html":3}],2:[function(require,module,exports){
+module.exports = '<div class="md-toolbar-tools" ng-if="!search.active">\n    <span>{{tableTitle}}</span>\n    <span flex></span>\n    <md-button class="md-icon-button" ng-if="search.enabled" ng-click="activateSearch()"><i class="mdi mdi-filter-variant mdi-24px"></i>{{tableSeachActive}}</md-button>\n</div>\n<div class="md-toolbar-tools" ng-if="search.active">\n    <i class="mdi mdi-magnify mdi-24px"></i>\n    <form flex name="filter.form">\n        <input type="text" placeholder="search" aria-invalid="false">\n    </form>\n    <md-button class="md-icon-button" ng-click="deactivateSearch()"><i class="mdi mdi-close"></i></md-button>\n</div>';
+},{}],3:[function(require,module,exports){
 module.exports = '<md-menu-item>\n    <md-button ng-click="dataSource.logout()">\n        <i class="mdi mdi-logout mdi-24px"></i>\n        Logout\n    </md-button>\n</md-menu-item>';
 },{}]},{},[1]);

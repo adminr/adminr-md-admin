@@ -1,0 +1,12 @@
+<div class="md-toolbar-tools" ng-if="!search.active">
+    <span>{{tableTitle}}</span>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-if="search.enabled" ng-click="activateSearch()"><i class="mdi mdi-filter-variant mdi-24px"></i>{{tableSeachActive}}</md-button>
+</div>
+<div class="md-toolbar-tools" ng-if="search.active">
+    <i class="mdi mdi-magnify mdi-24px"></i>
+    <form flex name="filter.form">
+        <input type="text" placeholder="search" aria-invalid="false">
+    </form>
+    <md-button class="md-icon-button" ng-click="deactivateSearch()"><i class="mdi mdi-close"></i></md-button>
+</div>
