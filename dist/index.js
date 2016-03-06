@@ -42,10 +42,17 @@ mod.provider('AdminrMdAdmin', [
 mod.directive('mdAdminTableResource', function() {
   return {
     compile: function(elm, attrs) {
-      var resourceName;
+      var bodyRow, errorBody, resourceName, table;
       resourceName = attrs.mdAdminTableResource;
-      elm.find('table').attr('md-progress', resourceName + '.$promise');
-      return elm.find('table').find('thead').attr('md-order', resourceName + '.params.order');
+      table = elm.find('table');
+      table.attr('md-progress', resourceName + '.$promise');
+      table.find('thead').attr('md-order', resourceName + '.params.order');
+      bodyRow = table.find('tbody').find('tr').attr('md-order', resourceName + '.params.order');
+      if (!bodyRow.attr('ng-repeat')) {
+        bodyRow.attr('ng-repeat', 'row in ' + resourceName + '.data');
+      }
+      errorBody = angular.element('<tbody class="md-error-body" ng-if="' + resourceName + '.error"><tr><td colspan="50"><span>{{' + resourceName + '.error.data.message || ' + resourceName + '.error.data || ' + resourceName + '.error}}</span></td></tr></tbody>');
+      return table.append(errorBody);
     }
   };
 });
@@ -55,7 +62,7 @@ mod.directive('mdAdminResource', function() {
     compile: function(elm, attrs) {
       var pagination, pagingRange, resourceName, tableContainer;
       resourceName = attrs.mdAdminResource;
-      pagingRange = '_pagingResource';
+      pagingRange = '_pagingResource' + Math.floor(Math.random() * 99999);
       pagination = elm.find('md-table-pagination');
       pagination.attr('md-total', '{{' + pagingRange + '.count}}');
       pagination.attr('md-limit', pagingRange + '.limit');
