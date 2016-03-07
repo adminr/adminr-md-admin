@@ -29,7 +29,7 @@
     "adminr-md-layout": "^0.0.9",
     "angular-material": "^1.0.5",
     "adminr-core": "^0.0.8",
-    "adminr-md-login": "^0.1.5",
+    "adminr-md-login": "^0.1.6",
     "angular-material-data-table": "^0.9.11",
     "adminr-datasources": "^0.1.19"
   }
